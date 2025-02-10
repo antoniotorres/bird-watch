@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 
@@ -28,13 +28,24 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="apple-mobile-web-app-title" content="BIRD WATCH" />
+        {process.env.NODE_ENV === "production" &&
+          process.env.NEXT_PUBLIC_UMAMI_ANALYTICS_URL && (
+            <script
+              async
+              defer
+              src={process.env.NEXT_PUBLIC_UMAMI_ANALYTICS_URL}
+              data-website-id={
+                process.env.NEXT_PUBLIC_UMAMI_ANALYTICS_WEBSITE_ID
+              }
+            ></script>
+          )}
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
-      <Analytics />
     </html>
   );
 }
