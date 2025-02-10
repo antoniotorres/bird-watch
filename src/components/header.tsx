@@ -45,7 +45,10 @@ export default function HeaderComponent() {
           >
             <Image
               alt="GitHub Repo stars"
-              src="https://img.shields.io/github/stars/antoniotorres/bird-watch"
+              className="h-4 w-auto"
+              width={100}
+              height={50}
+              src="https://img.shields.io/github/stars/antoniotorres/bird-watch.svg"
             />
           </a>
         </div>
@@ -83,9 +86,11 @@ export default function HeaderComponent() {
                   href="https://github.com/antoniotorres/bird-watch"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  <img
+                  <Image
                     alt="GitHub Repo stars"
-                    src="https://img.shields.io/github/stars/antoniotorres/bird-watch"
+                    width={100}
+                    height={50}
+                    src="https://img.shields.io/github/stars/antoniotorres/bird-watch.svg"
                   />
                 </a>
               </div>
