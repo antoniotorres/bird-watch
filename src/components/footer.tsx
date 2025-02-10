@@ -57,7 +57,7 @@ const navigation: NavigationItem[] = [
   },
 ];
 
-export default function Footer(): React.ReactElement {
+export default function FooterComponent(): React.ReactElement {
   return (
     <footer className="bg-orange-primary">
       <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
