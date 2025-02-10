@@ -8,9 +8,21 @@ export default {
   ],
   theme: {
     extend: {
+      animation: {
+        "blur-pulse": "blur-pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        orange: {
+          primary: "#F87D4F",
+        },
+      },
+      keyframes: {
+        "blur-pulse": {
+          "0%, 100%": { filter: "blur(40px)" },
+          "50%": { filter: "blur(20px)" },
+        },
       },
     },
   },
