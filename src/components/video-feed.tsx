@@ -5,10 +5,78 @@ import bgVideoFeed from '../images/bg-video-feed.png';
 import Image from 'next/image';
 
 export default function VideoFeed() {
+    const videoRef = React.useRef<HTMLVideoElement>(null);
     const [streamStatus, setStreamStatus] = React.useState({
         isActive: false,
         error: false
     });
+
+    React.useEffect(() => {
+        async function initWebRTC() {
+            try {
+                const pc = new RTCPeerConnection({
+                    iceServers: [{urls: 'stun:stun.l.google.com:19302'}]
+                });
+
+                // Add video transceiver for receiving
+                pc.addTransceiver('video', {direction: 'recvonly'});
+                pc.addTransceiver('audio', {direction: 'recvonly'});
+
+                // Set up video stream
+                if (videoRef.current) {
+                    videoRef.current.srcObject = new MediaStream();
+                }
+
+                // Handle incoming tracks
+                pc.ontrack = (event) => {
+                    if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
+                        videoRef.current.srcObject.addTrack(event.track);
+                    }
+                };
+
+                // Connect to WebSocket
+                const wsUrl = process.env.NEXT_PUBLIC_WEBRTC_WS_URL || 'wss://localhost:8080';
+                const ws = new WebSocket(wsUrl);
+
+                ws.onopen = () => {
+                    // Handle ICE candidates
+                    pc.onicecandidate = (event) => {
+                        if (!event.candidate) return;
+                        const msg = {type: 'webrtc/candidate', value: event.candidate.candidate};
+                        ws.send(JSON.stringify(msg));
+                    };
+
+                    // Create and send offer
+                    pc.createOffer()
+                        .then(offer => pc.setLocalDescription(offer))
+                        .then(() => {
+                            const msg = {type: 'webrtc/offer', value: pc.localDescription?.sdp};
+                            ws.send(JSON.stringify(msg));
+                        });
+                };
+
+                // Handle incoming WebSocket messages
+                ws.onmessage = (event) => {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'webrtc/candidate') {
+                        pc.addIceCandidate({candidate: msg.value, sdpMid: '0'});
+                    } else if (msg.type === 'webrtc/answer') {
+                        pc.setRemoteDescription({type: 'answer', sdp: msg.value});
+                    }
+                };
+
+                ws.onerror = () => {
+                    setStreamStatus({ isActive: false, error: true });
+                };
+
+            } catch (error) {
+                console.error('WebRTC initialization failed:', error);
+                setStreamStatus({ isActive: false, error: true });
+            }
+        }
+
+        initWebRTC();
+    }, []);
 
     // Add useEffect for connection timeout
     React.useEffect(() => {
@@ -60,16 +128,14 @@ export default function VideoFeed() {
             </div>
           )}
           <video
+            ref={videoRef}
             className="w-full rounded-t-md"
             autoPlay
             playsInline
             muted
             onError={handleVideoError}
             onPlaying={handleVideoPlaying}
-          >
-            <source src={process.env.NEXT_PUBLIC_VIDEO_STREAM_URL} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          />
         </div>
         <div className="px-4 py-4 sm:px-6">
           <div className="flex items-center">
