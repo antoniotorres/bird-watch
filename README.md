@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BIRD WATCH
+
+A Next.js application for bird watching through a live video feed using WebRTC.
+
+## Features
+
+- Live video streaming using WebRTC
+- Real-time connection status indicators
+- Responsive design for all devices
+- Built with modern web technologies
 
 ## Getting Started
 
-First, run the development server:
+First, clone the repository and install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone https://github.com/antoniotorres/bird-watch.git
+cd bird-watch
+pnpm install
+```
+
+Create a `.env.local` file based on `.env.example`:
+
+```bash
+cp .env.example .env.local
+```
+
+Update the environment variables in `.env.local` with your configuration:
+
+```
+NEXT_PUBLIC_VIDEO_STREAM_URL=your-video-stream-url
+NEXT_PUBLIC_UMAMI_ANALYTICS_URL=your-umami-analytics-url
+NEXT_PUBLIC_UMAMI_ANALYTICS_WEBSITE_ID=your-umami-analytics-website-id
+NEXT_PUBLIC_WEBRTC_WS_URL=your-webrtc-ws-url
+```
+
+Then, run the development server:
+
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [WebRTC](https://webrtc.org/) - Real-time video streaming
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Vercel Analytics](https://vercel.com/analytics) - Analytics
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy your Bird Watch app is to use the [Vercel Platform](https://vercel.com/new).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is open source and available under the [MIT license](LICENSE).
